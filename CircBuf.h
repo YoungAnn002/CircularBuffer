@@ -195,15 +195,22 @@ public:
 			std::copy(buffer + head, buffer + totalCapacity, temp);
 		}
 
-		buffer = temp;
+
+		//buffer = temp;
 		tail = numelements;
 		head = 0;
 		totalCapacity = newCapacity;
 		capacityLeft = newCapacity - numelements;
+		
+		delete[] buffer;
+		buffer = new char[totalCapacity];
+
+		std::copy(temp, temp + totalCapacity, buffer);
+		delete[] temp;
 
 	};	
-	void		expand(){
-		char* temp = new char[totalCapacity + CHUNK];
+	void expand(){
+        char* temp = new char[totalCapacity];
 
 		if(tail < head){
 			std::copy(buffer + head, buffer + totalCapacity, temp);
@@ -213,15 +220,16 @@ public:
 			std::copy(buffer + head, buffer + totalCapacity, temp);
 		}
 
-
-		buffer = temp;
-		//delete[] buffer;
-		tail = numelements;
-		head = 0;
 		totalCapacity += CHUNK;
 		capacityLeft += CHUNK;
-
-	};
+		delete[] buffer;
+		//buffer = temp;
+        buffer = new char[totalCapacity];
+        std::copy(temp, temp + totalCapacity, buffer);
+        tail = numelements;
+		head = 0;
+        delete[] temp;
+    };
 };
 
 
